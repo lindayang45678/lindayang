@@ -1,9 +1,36 @@
-var main=document.querySelector("#main");
+function getEle(ele){
+    return document.querySelector(ele)
+}
+var main = getEle('#main');
+var pSpan = getEle('.pSpan');
+var music = getEle('#music');
+var loading = getEle('#loading');
 var oLis=document.querySelectorAll('.list>li');
 var winW=window.innerWidth;
 var winH=window.innerHeight;
 var desW=640;
 var desH=960;
+var arr= ['email.png', 'img-5.png', 'lastpage-wechat.png', 'page1-bg.png', 'page1-fengche.png', 'page1-fengche-bang.png', 'page2-bg.png', 'page2-img.jpg','page3-bg.png', 'page4-bg.png', 'page5-bg.png', 'page5-gun-img.png', 'page6-bg.png', 'phone.png'];
+var num = 0;
+fnLoad();
+function fnLoad(){
+    for(var i = 0;i<arr.length;i++){
+        var oImg = new Image();
+        oImg.src = "images/"+arr[num];
+        oImg.onload = function(){
+            num++;
+            pSpan.style.width = num/(arr.length)*100+"%";
+        }
+    }
+    pSpan.addEventListener('webkitTransitionEnd',function(){
+        if(num ==14&&loading){
+            loading.parentNode.removeChild(loading);
+            loading=null;
+            //fnPhone.init();
+        }
+
+    },false)
+}
 main.style.webkitTransform="scale("+winH/desH+")";
 [].forEach.call(oLis,function(){
     arguments[0].index=arguments[1];
@@ -16,6 +43,7 @@ function start(e){
     this.startY= e.changedTouches[0].pageY;
 }
 function move(e){
+    music.play();
     e.preventDefault();
     var moveY=e.changedTouches[0].pageY;
     var changePos=moveY-this.startY;
